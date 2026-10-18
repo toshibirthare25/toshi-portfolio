@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toshi Birthare | Software Developer Portfolio</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicon/devicon@latest/devicon.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- <link rel="icon" type="image/svg+xl" href="./Image/LOGO.svg"> -->
+
+
+    <script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ink: { DEFAULT: '#0A1918', soft: '#0F2422', surface: '#123330', surface2: '#173D39', border: '#22504A' },
+                        coral: { DEFAULT: '#FF6E4E', hover: '#E85A3B' },
+                        gold: { DEFAULT: '#F4C95D' },
+                        paper: { DEFAULT: '#EAF3EF', muted: '#9FC3BA' }
+                    },
+                    fontFamily: {
+                        sans: ['Sora', 'sans-serif'],
+                        mono: ['IBM Plex Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            overflow-x: hidden;
+            background: #0A1918 !important;
+            color: #EAF3EF;
+        }
+
+        .grain::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 2;
+            pointer-events: none;
+            opacity: .04;
+            mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        .halo-grid {
+            background-image:
+                radial-gradient(circle at 15% 10%, rgba(255, 110, 78, .14), transparent 40%),
+                radial-gradient(circle at 85% 0%, rgba(244, 201, 93, .10), transparent 40%),
+                linear-gradient(rgba(234, 243, 239, .04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(234, 243, 239, .04) 1px, transparent 1px);
+            background-size: auto, auto, 46px 46px, 46px 46px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(120deg, #FF6E4E 0%, #F4C95D 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-hover {
+            transition: all .35s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-6px);
+            border-color: #FF6E4E;
+            box-shadow: 0 16px 40px -18px rgba(255, 110, 78, .35);
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: #F4C95D;
+            animation: blink .8s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0
+            }
+        }
+
+        .glass-nav {
+            background: rgba(10, 25, 24, .86);
+            backdrop-filter: blur(12px);
+        }
+
+        #canvas-container {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            opacity: .42;
+            pointer-events: none;
+        }
+
+        #canvas-container canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        main,
+        header,
+        footer {
+            position: relative;
+            z-index: 3;
+        }
+
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0%;
+            background: linear-gradient(90deg, #F4C95D, #FF6E4E);
+            z-index: 60;
+            transition: width .12s ease-out;
+        }
+
+        .marquee-wrap {
+            overflow: hidden;
+            position: relative;
+            -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            height: 100%;
+            gap: 12px;
+            animation: marquee-scroll 34s linear infinite;
+        }
+
+        .marquee-track.reverse {
+            animation-direction: reverse;
+            animation-duration: 40s;
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes marquee-scroll {
+            from {
+                transform: translateX(0)
+            }
+
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        .skill-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 18px;
+            border-radius: 12px;
+            background: #123330;
+            border: 1px solid rgba(159, 195, 186, .18);
+            white-space: nowrap;
+            font-size: 13px;
+            font-weight: 600;
+            color: #D5E9E2;
+            transition: border-color .25s, transform .25s, color .25s;
+        }
+
+        .skill-pill:hover {
+            border-color: #F4C95D;
+            color: #fff;
+        }
+
+        .skill-pill i {
+            font-size: 17px;
+        }
+
+        .skill-logo-image {
+            width: 1.25rem;
+            height: 1.25rem;
+            object-fit: contain;
+            flex: 0 0 auto;
+        }
+
+        .skill-pill .skill-logo-image {
+            width: 17px;
+            height: 17px;
+        }
+
+        .fa-linkedin-in {
+            color: #0A66C2;
+        }
+
+        .fa-github {
+            color: #F0F6FC;
+        }
+
+        .fa-whatsapp {
+            color: #25D366;
+        }
+
+        .fa-envelope {
+            color: #FF6E4E;
+        }
+
+        .btn-glow {
+            transition: box-shadow .3s ease, transform .3s ease;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 30px -6px rgba(255, 110, 78, .55);
+        }
+
+        .code-window {
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #22504A;
+            background: #081513;
+            box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .65);
+        }
+
+        .code-window-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: #0D211F;
+            border-bottom: 1px solid #1B3F3A;
+        }
+
+        .code-window-bar .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .code-window-bar .dot.red {
+            background: #ff5f57;
+        }
+
+        .code-window-bar .dot.yellow {
+            background: #febc2e;
+        }
+
+        .code-window-bar .dot.green {
+            background: #28c840;
+        }
+
+        .code-window-title {
+            margin-left: 8px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: #7EA79D;
+        }
+
+        .code-window-body {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12.5px;
+            line-height: 1.85;
+            padding: 20px 22px;
+            color: #D5E9E2;
+            overflow-x: auto;
+        }
+
+        .code-window-body .ln {
+            color: #3E655F;
+            display: inline-block;
+            width: 22px;
+            user-select: none;
+        }
+
+        .tok-kw {
+            color: #FF6E4E;
+        }
+
+        .tok-fn {
+            color: #F4C95D;
+        }
+
+        .tok-str {
+            color: #9BD8C8;
+        }
+
+        .tok-cm {
+            color: #5E8A82;
+            font-style: italic;
+        }
+
+        .code-window-cmd {
+            border-top: 1px solid #1B3F3A;
+            padding: 12px 22px 16px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 12px;
+            color: #9BD8C8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .code-window-cmd .prompt {
+            color: #F4C95D;
+        }
+
+        .project-card img {
+            transition: transform .5s ease;
+            filter: saturate(.85) contrast(1.05);
+
+        }
+
+        .project-slider-viewport {
+            overflow: hidden;
+            position: relative;
+            padding: 8px 54px 14px;
+        }
+
+        .project-slider-track {
+            display: flex;
+            gap: 32px;
+            transition: transform .5s cubic-bezier(.4, 0, .2, 1);
+            will-change: transform;
+        }
+
+        .project-slider-track .project-card {
+            flex: 0 0 calc(50% - 16px);
+            min-width: 0;
+        }
+
+        .project-slider-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .project-slider-side-controls {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8px;
+            pointer-events: none;
+        }
+
+        .project-slider-side-controls .project-slider-arrow {
+            pointer-events: auto;
+        }
+
+        .project-slider-arrow {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #e9c31c;
+            border-radius: 12px;
+            background: #123330;
+            color: #EAF3EF;
+            transition: border-color .25s, color .25s, transform .25s;
+        }
+
+        .project-slider-arrow:hover {
+            border-color: #FF6E4E;
+            color: #F4C95D;
+        }
+
+        .project-slider-dots {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .project-slider-dot {
+            width: 8px;
+            height: 8px;
+            padding: 0;
+            border: 0;
+            border-radius: 999px;
+            background: #5E8A82;
+            transition: width .25s, background .25s;
+        }
+
+        .project-slider-dot.active {
+            width: 24px;
+            background: #FF6E4E;
+        }
+
+        @media (max-width: 767px) {
+            .project-slider-viewport {
+                padding-left: 48px;
+                padding-right: 48px;
+            }
+
+            .project-slider-side-controls {
+                padding: 0 5px;
+            }
+
+            .project-slider-arrow {
+                width: 36px;
+                height: 36px;
+            }
+
+            .project-slider-track .project-card {
+                flex-basis: 100%;
+            }
+        }
+
+        .btn-live {
+            background: linear-gradient(120deg, #FF6E4E, #F4C95D);
+            color: #0A1918;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0A1918;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1B3F3A;
+            border-radius: 8px;
+            border: 2px solid #0A1918;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF6E4E;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="grain halo-grid antialiased selection:bg-coral selection:text-ink">
+
+
+
+
+    <div id="canvas-container" aria-hidden="true"></div>
+    <div id="scroll-progress"></div>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-ink-border/60">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="#home" class="text-xl font-bold tracking-tight text-white group flex items-center gap-2">
+                    <span class="text-white">TOSHI<span
+                            class="text-coral group-hover:text-gold transition-colors">.BIRTHARE</span></span>
+                </a>
+                <nav class="hidden md:flex space-x-6 text-sm font-medium text-paper-muted">
+                    <a href="#home" class="hover:text-coral transition-colors">Home</a>
+                    <a href="#about" class="hover:text-coral transition-colors">About</a>
+                    <a href="#skills" class="hover:text-coral transition-colors">Skills</a>
+                    <a href="#experience" class="hover:text-coral transition-colors">Experience</a>
+                    <a href="#projects" class="hover:text-coral transition-colors">Projects</a>
+                    <a href="#education" class="hover:text-coral transition-colors">Education</a>
+                    <a href="#contact" class="hover:text-coral transition-colors">Contact</a>
+                </nav>
+                <div class="hidden md:flex items-center gap-3">
+                    <a href="#contact"
+                        class="btn-glow bg-coral hover:bg-coral-hover text-ink text-xs font-bold px-4 py-2 rounded-lg transition-all hover:scale-105 active:scale-95">
+                        Hire Me
+                    </a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-paper-muted hover:text-white focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu"
+            class="hidden md:hidden bg-ink-surface border-b border-ink-border px-4 pt-2 pb-4 space-y-3 text-sm">
+            <a href="#home" class="mobile-nav-link block text-paper-muted hover:text-coral py-1">Home</a>
+            <a href="#about" class="mobile-nav-link block text-paper-muted hover:text-coral py-1">About</a>
+            <a href="#skills" class="mobile-nav-link block text-paper-muted hover:text-coral py-1">Skills</a>
+            <a href="#experience" class="mobile-nav-link block text-paper-muted hover:text-coral py-1">Experience</a>
+            <a href="#projects" class="mobile-nav-link block text-paper-muted hover:text-coral py-1">Projects</a>
+            <a href="#education" class="mobile-nav-link block text-paper-muted hover:text-coral py-1">Education &
+                Certifications</a>
+            <a href="#contact" class="mobile-nav-link block text-paper-muted hover:text-coral py-1">Contact</a>
+        </div>
+    </header>
+
+    <main class="pt-16">
+        <!-- Hero -->
+        <section id="home" class="min-h-[88vh] flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left reveal-left">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-coral/10 border border-coral/25 text-gold text-xs font-semibold uppercase tracking-wider">
+                        <span class="w-2 h-2 rounded-full bg-coral animate-pulse"></span> Open for Full-Time Roles
+                        &middot; Immediate Joining
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
+                        Hi, I'm <span class="gradient-text">Toshi Birthare</span>
+                    </h1>
+
+                    <div
+                        class="text-lg sm:text-2xl text-paper-muted font-medium h-8 flex items-center justify-center lg:justify-start">
+                        <span id="typing-text" class="text-gold font-semibold"></span><span
+                            class="typing-cursor">&nbsp;</span>
+                    </div>
+
+                    <p class="text-paper-muted max-w-2xl text-base sm:text-lg leading-relaxed mx-auto lg:mx-0">
+                        Software Developer with hands-on experience in React.js, Node.js, and Ruby on Rails.
+                        I build responsive web applications, RESTful APIs, and database-driven systems with a focus on
+                        full-stack development.
+                    </p>
+
+                    <div class="flex flex-wrap gap-4 justify-center lg:justify-start pt-2">
+                        <a href="#projects"
+                            class="btn-glow bg-coral hover:bg-coral-hover text-ink font-bold px-6 py-3 rounded-xl transition-all flex items-center gap-2 hover:scale-105">
+                            View Projects <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                        <a href="./doc-file/Toshi_Birthare_Resume.pdf" download
+                            class="border border-ink-border bg-ink-surface hover:bg-ink-surface2 text-paper font-semibold px-6 py-3 rounded-xl transition-all flex items-center gap-2 hover:border-gold">
+                            <i class="fa-solid fa-download text-gold"></i> Download CV
+                        </a>
+                    </div>
+
+                    <div class="flex items-center justify-center lg:justify-start gap-4 pt-4 text-paper-muted">
+                        <a href="https://linkedin.com/in/toshi-birthare-913808218" target="_blank"
+                            class="w-10 h-10 rounded-xl bg-ink-surface border border-ink-border flex items-center justify-center hover:border-coral transition-all hover:-translate-y-1"
+                            title="LinkedIn"><i class="fa-brands fa-linkedin-in text-[#0A66C2] text-lg"></i></a>
+                        <a href="https://github.com/toshibirthare25" target="_blank"
+                            class="w-10 h-10 rounded-xl bg-ink-surface border border-ink-border flex items-center justify-center hover:border-coral transition-all hover:-translate-y-1"
+                            title="GitHub"><i class="fa-brands fa-github text-[#F0F6FC] text-lg"></i></a>
+                        <a href="mailto:toshibirthare111@gmail.com"
+                            class="w-10 h-10 rounded-xl bg-ink-surface border border-ink-border flex items-center justify-center hover:border-coral transition-all hover:-translate-y-1"
+                            title="Email"><i class="fa-solid fa-envelope text-[#FF6E4E] text-lg"></i></a>
+                        <a href="https://wa.me/918349240132" target="_blank"
+                            class="w-10 h-10 rounded-xl bg-ink-surface border border-ink-border flex items-center justify-center hover:border-coral transition-all hover:-translate-y-1"
+                            title="WhatsApp"><i class="fa-brands fa-whatsapp text-[#25D366] text-lg"></i></a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 flex justify-center reveal-right">
+                    <div class="code-window w-full max-w-md">
+                        <div class="code-window-bar">
+                            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            <span class="code-window-title">app.js — portfolio</span>
+                        </div>
+                        <pre class="code-window-body"><code><span class="ln">1</span><span class="tok-kw">const</span> <span class="tok-fn">developer</span> = {
+<span class="ln">2</span>    name: <span class="tok-str">"Toshi Birthare"</span>,
+<span class="ln">3</span>    role: <span class="tok-str">"MERN Stack and Frontend Developer"</span>,
+<span class="ln">4</span>    stack: [<span class="tok-str">"React.js"</span>, <span class="tok-str">"Node.js"</span>, <span class="tok-str">"Ruby on Rails"</span>],
+<span class="ln">5</span>    <span class="tok-cm"># avoid N+1 queries on instructor lookup</span>
+<span class="ln">6</span>    <span class="tok-kw">def</span> <span class="tok-fn">get_queryset</span>(self):
+<span class="ln">7</span>        qs = super().get_queryset()
+<span class="ln">8</span>        <span class="tok-kw">return</span> qs.select_related(
+<span class="ln">9</span>            <span class="tok-str">"instructor"</span>
+<span class="ln">10</span>        ).filter(is_published=<span class="tok-kw">True</span>)</code></pre>
+                        <div class="code-window-cmd">
+                            <span class="prompt">$</span> npm run dev
+                            <span class="typing-cursor">&nbsp;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Ticker -->
+        <section class="py-8 border-y border-ink-border/60 bg-ink-soft/60" aria-label="Tech stack ticker">
+            <div class="marquee-wrap">
+                <div class="marquee-track">
+                    <span class="skill-pill"><i class="devicon-react-original colored"></i> React.js</span>
+                    <span class="skill-pill"><i class="devicon-nodejs-plain colored"></i> Node.js</span>
+                    <span class="skill-pill"><i class="devicon-javascript-plain colored"></i> JavaScript</span>
+                    <span class="skill-pill"><i class="devicon-ruby-plain colored"></i> Ruby</span>
+                    <span class="skill-pill"><i class="devicon-rails-plain colored"></i> Ruby on Rails</span>
+                    <span class="skill-pill"><i class="devicon-express-original colored"></i> Express.js</span>
+                    <span class="skill-pill"><i class="devicon-mysql-plain colored"></i> MySQL</span>
+                    <span class="skill-pill"><i class="devicon-git-plain colored"></i> Git & GitHub</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-react-original colored"></i>
+                        React.js</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-nodejs-plain colored"></i>
+                        Node.js</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-javascript-plain colored"></i>
+                        JavaScript</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-ruby-plain colored"></i> Ruby</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-rails-plain colored"></i> Ruby on
+                        Rails</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-express-original colored"></i>
+                        Express.js</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-mysql-plain colored"></i> MySQL</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-git-plain colored"></i> Git &
+                        GitHub</span>
+                </div>
+            </div>
+            <div class="marquee-wrap mt-3">
+                <div class="marquee-track reverse">
+                    <span class="skill-pill"><i class="devicon-html5-plain colored"></i> HTML5</span>
+                    <span class="skill-pill"><i class="devicon-css3-plain colored"></i> CSS3</span>
+                    <span class="skill-pill"><i class="devicon-bootstrap-plain colored"></i> Bootstrap</span>
+                    <span class="skill-pill"><i class="devicon-tailwindcss-plain colored"></i> Tailwind CSS</span>
+                    <span class="skill-pill"><i class="devicon-vitejs-plain colored"></i> Vite</span>
+                    <span class="skill-pill"><i class="devicon-postman-plain colored"></i> REST APIs</span>
+                    <span class="skill-pill"><i class="devicon-vscode-plain colored"></i> VS Code</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-html5-plain colored"></i> HTML5</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-css3-plain colored"></i> CSS3</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-bootstrap-plain colored"></i>
+                        Bootstrap</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-tailwindcss-plain colored"></i>
+                        Tailwind CSS</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-vitejs-plain colored"></i> Vite</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-postman-plain colored"></i> REST
+                        APIs</span>
+                    <span class="skill-pill" aria-hidden="true"><i class="devicon-vscode-plain colored"></i> VS
+                        Code</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="py-10 bg-ink-surface/40 border-y border-ink-border/60 reveal-up">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div class="p-4 rounded-xl bg-ink-surface border border-ink-border/50 card-hover">
+                        <h3 class="text-3xl font-extrabold text-coral mb-1">1+</h3>
+                        <p class="text-xs sm:text-sm text-paper-muted font-medium">Years Experience</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-ink-surface border border-ink-border/50 card-hover">
+                        <h3 class="text-3xl font-extrabold text-coral mb-1">4+</h3>
+                        <p class="text-xs sm:text-sm text-paper-muted font-medium">Full Stack Projects</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-ink-surface border border-ink-border/50 card-hover">
+                        <h3 class="text-3xl font-extrabold text-coral mb-1">2+</h3>
+                        <p class="text-xs sm:text-sm text-paper-muted font-medium">Software Projects</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-ink-surface border border-ink-border/50 card-hover">
+                        <h3 class="text-3xl font-extrabold text-coral mb-1">3</h3>
+                        <p class="text-xs sm:text-sm text-paper-muted font-medium">Core Frameworks</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section id="about" class="py-20 px-4 sm:px-6 lg:px-8 reveal-up">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-3">About Me</h2>
+                    <div class="w-16 h-1 bg-coral mx-auto rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                    <div
+                        class="lg:col-span-7 bg-ink-surface p-8 rounded-2xl border border-ink-border/60 flex flex-col justify-between space-y-4">
+                        <div class="space-y-4 text-paper leading-relaxed">
+                            <p>
+                                I am a <strong class="text-white">Software Developer</strong> with hands-on
+                                industry experience at
+                                <strong class="text-coral">Shanti Infosoft LLP</strong>, Indore. My core expertise
+                                includes building responsive web applications, RESTful APIs, and full-stack
+                                solutions using <strong class="text-white">React.js, Node.js, and Ruby on
+                                    Rails</strong>.
+                            </p>
+
+                            <p>
+                                During my internship, I worked on real-world projects including the
+                                <strong class="text-white">Training and Management System</strong>, where I worked
+                                on frontend development, API integration, authentication, role-based features,
+                                and responsive user interfaces. I also have experience working with
+                                <strong class="text-white">MySQL, Express.js, JavaScript, HTML, CSS, Bootstrap,
+                                    Tailwind CSS</strong> and Git.
+                            </p>
+
+                            <p class="text-sm text-paper-muted">
+                                I am currently focused on strengthening my
+                                <span class="text-paper">MERN Stack, React.js, Node.js, REST APIs,
+                                    backend development and database management</span>
+                                skills while continuously learning modern technologies and best practices
+                                to build scalable and user-friendly web applications.
+                            </p>
+                        </div>
+
+                        <div
+                            class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-ink-border/50 text-sm text-paper-muted">
+                            <div><span class="text-paper-muted/70 font-medium">Location:</span> <span
+                                    class="text-paper">Indore, Madhya Pradesh</span></div>
+                            <div><span class="text-paper-muted/70 font-medium">Email:</span> <span
+                                    class="text-paper">toshibirthare111@gmail.com</span></div>
+                            <div><span class="text-paper-muted/70 font-medium">Phone:</span> <span
+                                    class="text-paper">+91 8349240132</span></div>
+                            <div><span class="text-paper-muted/70 font-medium">Status:</span> <span
+                                    class="text-coral font-semibold">Immediate Joining</span></div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="lg:col-span-5 bg-ink-surface p-8 rounded-2xl border border-ink-border/60 space-y-6 flex flex-col justify-between">
+                        <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-user-check text-coral"></i> Core Competencies
+                        </h3>
+
+                        <div class="flex flex-wrap gap-2">
+                            <span
+                                class="px-3 py-1.5 bg-ink-soft text-paper rounded-lg text-xs font-medium border border-ink-border">Problem-Solving</span>
+                            <span
+                                class="px-3 py-1.5 bg-ink-soft text-paper rounded-lg text-xs font-medium border border-ink-border">Communication</span>
+                            <span
+                                class="px-3 py-1.5 bg-ink-soft text-paper rounded-lg text-xs font-medium border border-ink-border">Teamwork</span>
+                            <span
+                                class="px-3 py-1.5 bg-ink-soft text-paper rounded-lg text-xs font-medium border border-ink-border">Time
+                                Management</span>
+                            <span
+                                class="px-3 py-1.5 bg-ink-soft text-paper rounded-lg text-xs font-medium border border-ink-border">Quick
+                                Learning</span>
+                            <span
+                                class="px-3 py-1.5 bg-ink-soft text-paper rounded-lg text-xs font-medium border border-ink-border">Adaptability</span>
+                            <span
+                                class="px-3 py-1.5 bg-ink-soft text-paper rounded-lg text-xs font-medium border border-ink-border">Attention
+                                to Detail</span>
+                            <!-- <span
+                                class="px-3 py-1.5 bg-ink-soft text-paper rounded-lg text-xs font-medium border border-ink-border">
+                                SDLC & Agile</span> -->
+                            <!-- <span
+                                class="px-3 py-1.5 bg-ink-soft text-paper rounded-lg text-xs font-medium border border-ink-border">REST
+                                API Design
+                            </span> -->
+                            <!-- <span
+                                class="px-3 py-1.5 bg-ink-soft text-paper rounded-lg text-xs font-medium border border-ink-border">Code
+                                Reviews & Git
+                            </span>
+
+                            <span
+                                class="px-3 py-1.5 bg-ink-soft text-paper rounded-lg text-xs font-medium border border-ink-border">Debugging
+                                & Profiling
+                            </span>
+
+                            <span
+                                class="px-3 py-1.5 bg-ink-soft text-paper rounded-lg text-xs font-medium border border-ink-border">Database
+                                Schema Normalizatio
+                            </span>
+
+
+                            <span
+                                class="px-3 py-1.5 bg-ink-soft text-paper rounded-lg text-xs font-medium border border-ink-border">REST
+                                API Design
+                            </span> -->
+
+
+
+
+                        </div>
+
+                        <div
+                            class="p-4 rounded-xl bg-ink-soft border border-ink-border/50 text-xs text-paper-muted space-y-1">
+                            <p class="font-semibold text-paper">Objective:</p>
+                            <p>To contribute as a Junior / Full Stack and frontend Developer in a growth-focused
+                                software
+                                development team.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section id="skills"
+            class="py-20 bg-ink-surface/30 border-y border-ink-border/60 px-4 sm:px-6 lg:px-8 reveal-up">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-3">Technical Skills</h2>
+                    <p class="text-paper-muted">Tools and technologies I use for software development.</p>
+                    <div class="w-16 h-1 bg-coral mx-auto rounded-full mt-3"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-ink-surface p-6 rounded-2xl border border-ink-border/60 card-hover space-y-4">
+                        <div
+                            class="w-12 h-12 bg-coral/10 text-coral rounded-xl flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-server"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Backend Development</h3>
+                        <ul class="space-y-2.5 text-sm text-paper">
+                            <li><i class="devicon-nodejs-plain colored text-base"></i> Node.js</li>
+                            <li><i class="devicon-express-original colored text-base"></i> Express.js</li>
+                            <li><i class="devicon-ruby-plain colored text-base"></i> Ruby</li>
+                            <li><i class="devicon-rails-plain colored text-base"></i> Ruby on Rails</li>
+                            <li><i class="fa-solid fa-bolt text-coral text-base"></i> REST API Development</li>
+
+                        </ul>
+                    </div>
+                    <div class="bg-ink-surface p-6 rounded-2xl border border-ink-border/60 card-hover space-y-4">
+                        <div
+                            class="w-12 h-12 bg-coral/10 text-coral rounded-xl flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Frontend Development</h3>
+                        <ul class="space-y-2.5 text-sm text-paper">
+                            <li><i class="devicon-react-original colored text-base"></i> React.js</li>
+                            <li><i class="devicon-javascript-plain colored text-base"></i> JavaScript</li>
+                            <li><i class="devicon-html5-plain colored text-base"></i> HTML5</li>
+                            <li><i class="devicon-css3-plain colored text-base"></i> CSS3</li>
+                            <li><i class="devicon-bootstrap-plain colored text-base"></i> Bootstrap</li>
+                            <li><i class="devicon-tailwindcss-plain colored text-base"></i> Tailwind CSS</li>
+                            <li><i class="devicon-vitejs-plain colored text-base"></i> Vite</li>
+                        </ul>
+                    </div>
+                    <div class="bg-ink-surface p-6 rounded-2xl border border-ink-border/60 card-hover space-y-4">
+                        <div
+                            class="w-12 h-12 bg-coral/10 text-coral rounded-xl flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Database & Tools</h3>
+                        <ul class="space-y-2.5 text-sm text-paper">
+                            <li><i class="devicon-mysql-plain colored text-base"></i> MySQL</li>
+                            <!-- <li><i class="devicon-git-plain colored text-base"></i> Git</li> -->
+                            <li><i class="devicon-github-original colored text-base"></i> GitHub</li>
+                            <li><i class="devicon-postman-plain colored text-base"></i> REST APIs / Postman</li>
+                            <li><i class="devicon-vscode-plain colored text-base"></i> VS Code</li>
+                            <li><i class="fa-solid fa-code text-coral text-base"></i> Full-Stack Development</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience -->
+        <section id="experience" class="py-20 px-4 sm:px-6 lg:px-8 reveal-up">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-3">Work Experience</h2>
+                    <p class="text-paper-muted">Professional software development experience.</p>
+                    <div class="w-16 h-1 bg-coral mx-auto rounded-full mt-3"></div>
+                </div>
+                <div class="space-y-8">
+                    <div class="bg-ink-surface p-8 rounded-2xl border border-ink-border/60 relative">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-12 h-12 bg-coral/10 text-coral rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
+                                <i class="fa-solid fa-briefcase"></i>
+                            </div>
+                            <div class="space-y-3 w-full">
+                                <div>
+                                    <div class="flex flex-wrap items-center justify-between gap-2">
+                                        <h3 class="text-xl font-bold text-white">MERN Stack Intern</h3><span
+                                            class="text-xs font-semibold px-3 py-1 bg-coral/10 text-gold rounded-full border border-coral/25">1
+                                            Years</span>
+                                    </div>
+                                    <p class="text-sm font-medium text-paper-muted">Shanti Infosoft LLP, Indore</p>
+                                </div>
+                                <ul class="space-y-2 text-sm text-paper list-disc list-inside">
+                                    <li>Developed responsive web applications using React.js and Node.js.</li>
+                                    <li>Worked on frontend components, API integration, and database operations.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-ink-surface p-8 rounded-2xl border border-ink-border/60 relative">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="w-12 h-12 bg-coral/10 text-coral rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
+                                <i class="fa-solid fa-code"></i>
+                            </div>
+                            <div class="space-y-3 w-full">
+                                <div>
+                                    <div class="flex flex-wrap items-center justify-between gap-2">
+                                        <h3 class="text-xl font-bold text-white">Ruby on Rails Intern</h3><span
+                                            class="text-xs font-semibold px-3 py-1 bg-coral/10 text-gold rounded-full border border-coral/25">6
+                                            Month</span>
+                                    </div>
+                                    <p class="text-sm font-medium text-paper-muted">Gems Essence Infotech Pvt Ltd,
+                                        Indore</p>
+                                </div>
+                                <ul class="space-y-2 text-sm text-paper list-disc list-inside">
+                                    <li>Developed and maintained backend APIs using Ruby on Rails.</li>
+                                    <li>Implemented database models, validations, and business logic.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section id="projects"
+            class="py-20 bg-ink-surface/30 border-y border-ink-border/60 px-4 sm:px-6 lg:px-8 reveal-up">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-8">
+                    <h2 class="text-3xl font-bold text-white mb-3">Featured Projects</h2>
+                    <p class="text-paper-muted">Software projects built with modern web technologies.</p>
+                    <div class="w-16 h-1 bg-coral mx-auto rounded-full mt-3"></div>
+                </div>
+                <div class="flex justify-center gap-3 mb-10 flex-wrap">
+                    <button onclick="filterProjects('all', this)"
+                        class="filter-btn active px-4 py-2 rounded-xl text-xs font-bold bg-coral text-ink transition-all">All
+                        Projects</button>
+                    <button onclick="filterProjects('fullstack', this)"
+                        class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-ink-surface text-paper-muted border border-ink-border hover:border-coral transition-all">Full-Stack</button>
+                    <button onclick="filterProjects('frontend', this)"
+                        class="filter-btn px-4 py-2 rounded-xl text-xs font-bold bg-ink-surface text-paper-muted border border-ink-border hover:border-coral transition-all">React
+                        / Frontend</button>
+                </div>
+                <div id="project-slider-viewport" class="project-slider-viewport">
+                    <div class="project-slider-side-controls" aria-label="Project slider navigation"><button
+                            id="project-prev" class="project-slider-arrow" type="button"
+                            aria-label="Previous project"><i class="fa-solid fa-chevron-left"></i></button><button
+                            id="project-next" class="project-slider-arrow" type="button" aria-label="Next project"><i
+                                class="fa-solid fa-chevron-right"></i></button></div>
+                    <div id="project-slider-track" class="project-slider-track">
+
+                        <!-- Photoshoot  -->
+                        <div
+                            class="project-card frontend bg-ink-surface rounded-2xl overflow-hidden border border-ink-border/60 card-hover flex flex-col">
+                            <div class="h-100 bg-ink-soft relative overflow-hidden">
+                                <img src="./image/Photoshoot.png" alt="Photoshoot Website preview"
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                                <div><span class="text-xs font-bold text-gold uppercase tracking-wider">React.js</span>
+                                    <h3 class="text-2xl font-bold text-white mt-1 mb-2">Photoshoot Website</h3>
+                                    <p class="text-paper text-sm leading-relaxed mb-4">Responsive photography booking
+                                        and portfolio website built using React.js with modern UI and gallery management
+                                        features.</p>
+                                    <div class="flex flex-wrap gap-2"><span
+                                            class="px-2.5 py-1 bg-ink-soft text-paper rounded-md text-xs border border-ink-border">React.js</span><span
+                                            class="px-2.5 py-1 bg-ink-soft text-paper rounded-md text-xs border border-ink-border">JavaScript</span><span
+                                            class="px-2.5 py-1 bg-ink-soft text-paper rounded-md text-xs border border-ink-border">CSS</span>
+                                    </div>
+                                </div>
+                                <div class="pt-2"><a href="https://github.com/toshibirthare25/project-photoshot"
+                                        target="_blank"
+                                        class="inline-flex items-center gap-2 text-gold font-semibold hover:underline text-sm">Code
+                                        <i class="fa-brands fa-github"></i></a><button
+                                        onclick="openModal('Photoshoot Website','Responsive photography booking and portfolio website developed with React.js, modern UI, and gallery management features.',['React.js','JavaScript','CSS'])"
+                                        class="float-right text-xs font-semibold text-paper-muted hover:text-white">Quick
+                                        Details <i class="fa-solid fa-circle-info"></i></button>
+                                    <a href="https://client-project1-red.vercel.app/" target="_blank"
+                                        class="btn-live inline-flex items-center gap-2 font-bold text-xs px-3 py-1.5 rounded-lg hover:scale-105 transition-all">
+                                        Live Demo <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- training managment -->
+                        <div
+                            class="project-card frontend bg-ink-surface rounded-2xl overflow-hidden border border-ink-border/60 card-hover flex flex-col">
+                            <div class="h-100 bg-ink-soft relative overflow-hidden"><img src="./image/TMS.png"
+                                    alt="Training Management System preview" class="w-full h-full object-cover"></div>
+                            <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                                <div><span class="text-xs font-bold text-gold uppercase tracking-wider">React.js /
+                                        Vite</span>
+                                    <h3 class="text-2xl font-bold text-white mt-1 mb-2">Training Management System</h3>
+                                    <p class="text-paper text-sm leading-relaxed mb-4">Responsive Training Management
+                                        System featuring course management, assessments, training modules, class
+                                        management, practice questions, testimonials, and interactive UI.</p>
+                                    <div class="flex flex-wrap gap-2"><span
+                                            class="px-2.5 py-1 bg-ink-soft text-paper rounded-md text-xs border border-ink-border">React.js</span><span
+                                            class="px-2.5 py-1 bg-ink-soft text-paper rounded-md text-xs border border-ink-border">Vite</span><span
+                                            class="px-2.5 py-1 bg-ink-soft text-paper rounded-md text-xs border border-ink-border">Tailwind
+                                            CSS</span></div>
+                                </div>
+                                <div class="pt-2"><a href="https://github.com/toshibirthare25/project-photoshot"
+                                        target="_blank"
+                                        class="inline-flex items-center gap-2 text-gold font-semibold hover:underline text-sm">Code
+                                        <i class="fa-brands fa-github"></i></a><button
+                                        onclick="openModal('Photoshoot Website','Responsive photography booking and portfolio website developed with React.js, modern UI, and gallery management features.',['React.js','JavaScript','CSS'])"
+                                        class="float-right text-xs font-semibold text-paper-muted hover:text-white">Quick
+                                        Details <i class="fa-solid fa-circle-info"></i></button>
+                                    <a href="https://training-management-frontend-delta.vercel.app/" target="_blank"
+                                        class="btn-live inline-flex items-center gap-2 font-bold text-xs px-3 py-1.5 rounded-lg hover:scale-105 transition-all">
+                                        Live Demo <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Swiggy -->
+                        <div
+                            class="project-card fullstack bg-ink-surface rounded-2xl overflow-hidden border border-ink-border/60 card-hover flex flex-col">
+                            <div class="h-100 bg-ink-soft relative overflow-hidden"><img src="./image/Swiggy.png"
+                                    alt="Food Ordering Website preview" class="w-full h-full object-cover"></div>
+                            <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                                <div><span class="text-xs font-bold text-gold uppercase tracking-wider">React.js &
+                                        Node.js</span>
+                                    <h3 class="text-2xl font-bold text-white mt-1 mb-2">Food Ordering Website</h3>
+                                    <p class="text-paper text-sm leading-relaxed mb-4">Full-stack food ordering platform
+                                        with menu management, cart functionality, order processing, and backend API
+                                        integration.</p>
+                                    <div class="flex flex-wrap gap-2"><span
+                                            class="px-2.5 py-1 bg-ink-soft text-paper rounded-md text-xs border border-ink-border">React.js</span><span
+                                            class="px-2.5 py-1 bg-ink-soft text-paper rounded-md text-xs border border-ink-border">Node.js</span><span
+                                            class="px-2.5 py-1 bg-ink-soft text-paper rounded-md text-xs border border-ink-border">REST
+                                            API</span></div>
+                                </div>
+                                <div class="pt-2"><a href="https://github.com/toshibirthare25/project-photoshot"
+                                        target="_blank"
+                                        class="inline-flex items-center gap-2 text-gold font-semibold hover:underline text-sm">Code
+                                        <i class="fa-brands fa-github"></i></a><button
+                                        onclick="openModal('Photoshoot Website','Responsive photography booking and portfolio website developed with React.js, modern UI, and gallery management features.',['React.js','JavaScript','CSS'])"
+                                        class="float-right text-xs font-semibold text-paper-muted hover:text-white">Quick
+                                        Details <i class="fa-solid fa-circle-info"></i></button>
+                                    <!-- <a href="https://training-management-frontend-delta.vercel.app/" target="_blank"
+                                        class="btn-live inline-flex items-center gap-2 font-bold text-xs px-3 py-1.5 rounded-lg hover:scale-105 transition-all">
+                                        Live Demo <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                    </a> -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Bus Reservation -->
+                        <!-- <div
+                            class="project-card fullstack bg-ink-surface rounded-2xl overflow-hidden border border-ink-border/60 card-hover flex flex-col">
+                            <div class="h-100 bg-ink-soft relative overflow-hidden"><img src="./image/Bus1.png"
+                                    alt="Bus Reservation System preview" class="w-full h-full object-cover"></div>
+                            <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                                <div><span class="text-xs font-bold text-gold uppercase tracking-wider">Ruby on
+                                        Rails</span>
+                                    <h3 class="text-2xl font-bold text-white mt-1 mb-2">Bus Reservation System</h3>
+                                    <p class="text-paper text-sm leading-relaxed mb-4">Bus booking application with user
+                                        authentication, seat reservation, route management, and booking history
+                                        features.</p>
+                                    <div class="flex flex-wrap gap-2"><span
+                                            class="px-2.5 py-1 bg-ink-soft text-paper rounded-md text-xs border border-ink-border">Ruby
+                                            on Rails</span><span
+                                            class="px-2.5 py-1 bg-ink-soft text-paper rounded-md text-xs border border-ink-border">MySQL</span><span
+                                            class="px-2.5 py-1 bg-ink-soft text-paper rounded-md text-xs border border-ink-border">REST
+                                            API</span></div>
+                                </div>
+                                <div class="pt-2"><a href="https://github.com/toshibirthare25/project-photoshot"
+                                        target="_blank"
+                                        class="inline-flex items-center gap-2 text-gold font-semibold hover:underline text-sm">Code
+                                        <i class="fa-brands fa-github"></i></a><button
+                                        onclick="openModal('Photoshoot Website','Responsive photography booking and portfolio website developed with React.js, modern UI, and gallery management features.',['React.js','JavaScript','CSS'])"
+                                        class="float-right text-xs font-semibold text-paper-muted hover:text-white">Quick
+                                        Details <i class="fa-solid fa-circle-info"></i></button>
+                                    <a href="https://training-management-frontend-delta.vercel.app/" target="_blank"
+                                        class="btn-live inline-flex items-center gap-2 font-bold text-xs px-3 py-1.5 rounded-lg hover:scale-105 transition-all">
+                                        Live Demo <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="project-slider-controls" aria-label="Project slider controls">
+                    <div id="project-slider-dots" class="project-slider-dots"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education -->
+        <section id="education" class="py-20 px-4 sm:px-6 lg:px-8 reveal-up">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-3">Education</h2>
+                    <p class="text-paper-muted">Academic background.</p>
+                    <div class="w-16 h-1 bg-coral mx-auto rounded-full mt-3"></div>
+                </div>
+                <div class="max-w-3xl mx-auto bg-ink-surface p-6 rounded-2xl border border-ink-border/60 card-hover">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-2"><i
+                            class="fa-solid fa-graduation-cap text-coral"></i> B.Tech (Electronics & Communication)</h3>
+                    <p class="text-sm text-paper-muted mt-2">Chameli Devi Group Of Institutions, Indore · 2024</p>
+                    <p class="text-sm text-gold mt-1">CGPA: 7.61</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact"
+            class="py-20 bg-ink-surface/30 border-t border-ink-border/60 px-4 sm:px-6 lg:px-8 reveal-up">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <h2 class="text-3xl font-bold text-white mb-3">Get In Touch</h2>
+                    <p class="text-paper-muted">Have a job role or project? Feel free to reach out directly.</p>
+                    <div class="w-16 h-1 bg-coral mx-auto rounded-full mt-3"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <div class="lg:col-span-5 bg-ink-surface p-6 rounded-2xl border border-ink-border/60 space-y-6">
+                        <h3 class="text-xl font-bold text-white">Contact Info</h3>
+
+                        <div
+                            class="flex items-center justify-between p-3 bg-ink-soft rounded-xl border border-ink-border/40">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-10 h-10 bg-coral/10 text-coral rounded-lg flex items-center justify-center text-base">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] text-paper-muted font-semibold uppercase">Email</p>
+                                    <a href="mailto:toshibirthare111@gmail.com"
+                                        class="text-paper hover:text-coral font-medium text-xs sm:text-sm">toshibirthare111@gmail.com</a>
+                                </div>
+                            </div>
+                            <button onclick="copyEmail()" class="text-xs text-paper-muted hover:text-coral p-2"
+                                title="Copy Email">
+                                <i id="copy-icon" class="fa-regular fa-copy text-base"></i>
+                            </button>
+                        </div>
+
+                        <div class="flex items-center gap-3 p-3 bg-ink-soft rounded-xl border border-ink-border/40">
+                            <div
+                                class="w-10 h-10 bg-coral/10 text-coral rounded-lg flex items-center justify-center text-base">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-paper-muted font-semibold uppercase">Phone / WhatsApp</p>
+                                <a href="https://wa.me/918349240132" target="_blank"
+                                    class="text-paper hover:text-coral font-medium text-xs sm:text-sm">+91
+                                    8349240132</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 p-3 bg-ink-soft rounded-xl border border-ink-border/40">
+                            <div
+                                class="w-10 h-10 bg-coral/10 text-coral rounded-lg flex items-center justify-center text-base">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-paper-muted font-semibold uppercase">Location</p>
+                                <p class="text-paper font-medium text-xs sm:text-sm">Indore, Madhya Pradesh, India</p>
+                            </div>
+                        </div>
+
+                        <div class="pt-2">
+                            <p class="text-xs font-semibold text-paper-muted uppercase mb-3">Social Connections</p>
+                            <div class="flex gap-3">
+                                <a href="https://linkedin.com/in/toshi-birthare-913808218" target="_blank"
+                                    class="w-10 h-10 rounded-xl bg-ink-surface border border-ink-border flex items-center justify-center hover:border-coral transition-all ">
+                                    <i class="fa-brands fa-linkedin-in"></i>
+                                </a>
+                                <a href="https://github.com/toshibirthare25" target="_blank"
+                                    class="w-10 h-10 rounded-xl bg-ink-surface border border-ink-border flex items-center justify-center hover:border-coral transition-all ">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                                <a href="https://wa.me/918349240132" target="_blank"
+                                    class="w-10 h-10 rounded-xl bg-ink-surface border border-ink-border flex items-center justify-center hover:border-coral transition-all">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 bg-ink-surface p-6 rounded-2xl border border-ink-border/60">
+                        <form id="contact-form" class="space-y-4">
+                            <div>
+                                <label for="name"
+                                    class="block text-xs font-semibold text-paper uppercase tracking-wider mb-2">Your
+                                    Name</label>
+                                <input type="text" id="name" required placeholder="Abc..."
+                                    class="w-full bg-ink-soft border border-ink-border rounded-xl px-4 py-3 text-paper text-sm focus:outline-none focus:border-coral transition-colors">
+                            </div>
+                            <div>
+                                <label for="email"
+                                    class="block text-xs font-semibold text-paper uppercase tracking-wider mb-2">Your
+                                    Email</label>
+                                <input type="email" id="email" required placeholder="xyz@email.com"
+                                    class="w-full bg-ink-soft border border-ink-border rounded-xl px-4 py-3 text-paper text-sm focus:outline-none focus:border-coral transition-colors">
+                            </div>
+                            <div>
+                                <label for="message"
+                                    class="block text-xs font-semibold text-paper uppercase tracking-wider mb-2">Message</label>
+                                <textarea id="message" rows="4" required
+                                    placeholder="Hi Toshi, I would like to discuss a software opportunity..."
+                                    class="w-full bg-ink-soft border border-ink-border rounded-xl px-4 py-3 text-paper text-sm focus:outline-none focus:border-coral transition-colors"></textarea>
+                            </div>
+                            <button type="submit"
+                                class="w-full bg-coral hover:bg-coral-hover text-ink font-bold py-3.5 rounded-xl transition-all hover:scale-[1.01]">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-ink py-8 border-t border-ink-border/60 text-center text-paper-muted text-sm">
+        <div class="max-w-6xl mx-auto px-4">
+            <p>&copy; 2026 Toshi Birthare. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <button id="back-to-top"
+        class="hidden fixed bottom-6 right-6 w-11 h-11 bg-coral text-ink rounded-xl shadow-lg flex items-center justify-center font-bold transition-all hover:scale-110 z-50">
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <div id="project-modal"
+        class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-ink-surface border border-ink-border rounded-2xl max-w-lg w-full p-6 space-y-4 relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-paper-muted hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <h3 id="modal-title" class="text-2xl font-bold text-white"></h3>
+            <p id="modal-description" class="text-sm text-paper leading-relaxed"></p>
+            <div>
+                <h4 class="text-xs font-bold text-gold uppercase mb-2">Technologies Used</h4>
+                <div id="modal-tech" class="flex flex-wrap gap-2"></div>
+            </div>
+            <button onclick="closeModal()"
+                class="w-full bg-ink-soft hover:bg-ink-surface2 text-white font-semibold py-2 rounded-xl text-xs transition-colors">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Use the same real technology logos as the experiment page in skills and tickers.
+        function replaceDeviconFontsWithImages() {
+            document.querySelectorAll('i[class*="devicon-"]').forEach(icon => {
+                const deviconClass = Array.from(icon.classList).find(className => className.startsWith('devicon-'));
+                if (!deviconClass) return;
+                const match = deviconClass.match(/^devicon-([a-z0-9]+)-(plain|original)$/);
+                if (!match) return;
+
+                const logo = document.createElement('img');
+                logo.alt = '';
+                logo.setAttribute('aria-hidden', 'true');
+                logo.className = 'skill-logo-image';
+                const variants = match[1] === 'django'
+                    ? ['plain', 'original']
+                    : ['original', 'plain'];
+                let variantIndex = 0;
+                logo.src = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${match[1]}/${match[1]}-${variants[variantIndex]}.svg`;
+                logo.onerror = () => {
+                    variantIndex += 1;
+                    if (variantIndex < variants.length) {
+                        logo.src = `https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${match[1]}/${match[1]}-${variants[variantIndex]}.svg`;
+                    } else {
+                        logo.replaceWith(icon);
+                    }
+                };
+                icon.replaceWith(logo);
+            });
+        }
+        replaceDeviconFontsWithImages();
+
+        // 0. Three.js floating wireframe background, adapted to the portfolio palette.
+        function initThreeBackground() {
+            const container = document.getElementById('canvas-container');
+            if (!container || typeof THREE === 'undefined') return;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 30;
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            const geometry = new THREE.IcosahedronGeometry(1, 0);
+            const materials = [
+                new THREE.MeshBasicMaterial({ color: 0xFF6E4E, wireframe: true, transparent: true, opacity: .7 }),
+                new THREE.MeshBasicMaterial({ color: 0xF4C95D, wireframe: true, transparent: true, opacity: .65 })
+            ];
+            const group = new THREE.Group();
+
+            for (let i = 0; i < 45; i++) {
+                const mesh = new THREE.Mesh(geometry, materials[i % materials.length]);
+                mesh.position.set((Math.random() - .5) * 60, (Math.random() - .5) * 60, (Math.random() - .5) * 60);
+                const scale = Math.random() * 2 + .5;
+                mesh.scale.setScalar(scale);
+                mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+                group.add(mesh);
+            }
+            scene.add(group);
+
+            let mouseX = 0;
+            let mouseY = 0;
+            window.addEventListener('mousemove', event => {
+                mouseX = (event.clientX / window.innerWidth - .5) * .5;
+                mouseY = (event.clientY / window.innerHeight - .5) * .5;
+            });
+
+            function animate() {
+                group.rotation.x += .0015;
+                group.rotation.y += .002;
+                group.position.x += (mouseX * 10 - group.position.x) * .05;
+                group.position.y += (-mouseY * 10 - group.position.y) * .05;
+                renderer.render(scene, camera);
+                if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) requestAnimationFrame(animate);
+            }
+            animate();
+
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+        document.addEventListener('DOMContentLoaded', initThreeBackground);
+
+        // 1. Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        mobileNavLinks.forEach(link => link.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+
+        // 2. Typing Text Effect
+        const roles = ["MERN Stack Developer", "React.js Developer", "Full-Stack Software Developer", "Ruby on Rails Developer"];
+        let roleIndex = 0, charIndex = 0, isDeleting = false;
+        const typingElement = document.getElementById('typing-text');
+        function typeEffect() {
+            if (!typingElement) return;
+            const currentRole = roles[roleIndex];
+            if (isDeleting) { typingElement.textContent = currentRole.substring(0, charIndex--); }
+            else { typingElement.textContent = currentRole.substring(0, charIndex++); }
+            let typeSpeed = isDeleting ? 40 : 80;
+            if (!isDeleting && charIndex === currentRole.length + 1) { typeSpeed = 1800; isDeleting = true; }
+            else if (isDeleting && charIndex === 0) { isDeleting = false; roleIndex = (roleIndex + 1) % roles.length; typeSpeed = 400; }
+            setTimeout(typeEffect, typeSpeed);
+        }
+        document.addEventListener("DOMContentLoaded", typeEffect);
+
+        // 3. ScrollReveal
+        if (typeof ScrollReveal !== 'undefined') {
+            const sr = ScrollReveal({ duration: 800, delay: 150, distance: '25px', easing: 'cubic-bezier(0.5, 0, 0, 1)', reset: false });
+            sr.reveal('.reveal-left', { origin: 'left' });
+            sr.reveal('.reveal-right', { origin: 'right' });
+            sr.reveal('.reveal-up', { origin: 'bottom', interval: 100 });
+        }
+
+        // 3b. Scroll Progress Bar
+        const scrollProgressBar = document.getElementById('scroll-progress');
+        function updateScrollProgress() {
+            if (!scrollProgressBar) return;
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const percent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            scrollProgressBar.style.width = percent + '%';
+        }
+        window.addEventListener('scroll', updateScrollProgress);
+        updateScrollProgress();
+
+        // 4. Back To Top
+        const backToTopBtn = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) { backToTopBtn.classList.remove('hidden'); } else { backToTopBtn.classList.add('hidden'); }
+        });
+        backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        // 5. Project slider: add another .project-card to the track and it appears automatically.
+        const projectSliderTrack = document.getElementById('project-slider-track');
+        const projectSliderViewport = document.getElementById('project-slider-viewport');
+        const projectSliderDots = document.getElementById('project-slider-dots');
+        const projectSliderPrev = document.getElementById('project-prev');
+        const projectSliderNext = document.getElementById('project-next');
+        let projectSliderIndex = 0;
+        let projectSliderPages = 1;
+        let projectSliderTimer;
+
+        function getVisibleProjectCards() {
+            return Array.from(projectSliderTrack.querySelectorAll('.project-card'))
+                .filter(card => card.style.display !== 'none');
+        }
+
+        function renderProjectSlider() {
+            const visibleCards = getVisibleProjectCards();
+            const cardsPerPage = window.innerWidth >= 768 ? 2 : 1;
+            projectSliderPages = Math.max(1, Math.ceil(visibleCards.length / cardsPerPage));
+            projectSliderIndex = Math.min(projectSliderIndex, projectSliderPages - 1);
+            projectSliderDots.innerHTML = '';
+
+            for (let index = 0; index < projectSliderPages; index++) {
+                const dot = document.createElement('button');
+                dot.type = 'button';
+                dot.className = `project-slider-dot${index === projectSliderIndex ? ' active' : ''}`;
+                dot.setAttribute('aria-label', `Show project slide ${index + 1}`);
+                dot.addEventListener('click', () => goToProjectSlide(index));
+                projectSliderDots.appendChild(dot);
+            }
+
+            updateProjectSliderPosition();
+        }
+
+        function updateProjectSliderPosition() {
+            const firstCard = getVisibleProjectCards()[0];
+            if (!firstCard) return;
+            const cardStep = firstCard.getBoundingClientRect().width + 32;
+            const cardsPerPage = window.innerWidth >= 768 ? 2 : 1;
+            projectSliderTrack.style.transform = `translateX(-${projectSliderIndex * cardStep * cardsPerPage}px)`;
+            projectSliderDots.querySelectorAll('.project-slider-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === projectSliderIndex);
+            });
+            projectSliderPrev.disabled = projectSliderPages <= 1;
+            projectSliderNext.disabled = projectSliderPages <= 1;
+            projectSliderPrev.style.opacity = projectSliderPages <= 1 ? '.45' : '1';
+            projectSliderNext.style.opacity = projectSliderPages <= 1 ? '.45' : '1';
+        }
+
+        function goToProjectSlide(index) {
+            projectSliderIndex = (index + projectSliderPages) % projectSliderPages;
+            updateProjectSliderPosition();
+        }
+
+        function startProjectSlider() {
+            clearInterval(projectSliderTimer);
+            projectSliderTimer = setInterval(() => {
+                if (projectSliderPages > 1) goToProjectSlide(projectSliderIndex + 1);
+            }, 5000);
+        }
+
+        projectSliderPrev.addEventListener('click', () => goToProjectSlide(projectSliderIndex - 1));
+        projectSliderNext.addEventListener('click', () => goToProjectSlide(projectSliderIndex + 1));
+        projectSliderViewport.addEventListener('mouseenter', () => clearInterval(projectSliderTimer));
+        projectSliderViewport.addEventListener('mouseleave', startProjectSlider);
+        window.addEventListener('resize', renderProjectSlider);
+        renderProjectSlider();
+        startProjectSlider();
+
+        // Project Filter
+        function filterProjects(category, clickedButton) {
+            const cards = projectSliderTrack.querySelectorAll('.project-card');
+            const btns = document.querySelectorAll('.filter-btn');
+            btns.forEach(btn => {
+                btn.classList.remove('bg-coral', 'text-ink');
+                btn.classList.add('bg-ink-surface', 'text-paper-muted');
+            });
+            clickedButton.classList.remove('bg-ink-surface', 'text-paper-muted');
+            clickedButton.classList.add('bg-coral', 'text-ink');
+            cards.forEach(card => {
+                card.style.display = category === 'all' || card.classList.contains(category) ? 'flex' : 'none';
+            });
+            projectSliderIndex = 0;
+            renderProjectSlider();
+            startProjectSlider();
+        }
+
+        // 6. Project Modal
+        function openModal(title, desc, techArray) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-description').textContent = desc;
+            const techContainer = document.getElementById('modal-tech');
+            techContainer.innerHTML = '';
+            techArray.forEach(tech => {
+                const tag = document.createElement('span');
+                tag.className = 'px-2.5 py-1 bg-ink-soft text-gold rounded-md text-xs border border-ink-border';
+                tag.textContent = tech;
+                techContainer.appendChild(tag);
+            });
+            document.getElementById('project-modal').classList.remove('hidden');
+        }
+        function closeModal() { document.getElementById('project-modal').classList.add('hidden'); }
+
+        // 7. Copy Email
+        function copyEmail() {
+            navigator.clipboard.writeText('toshibirthare111@gmail.com').then(() => {
+                const icon = document.getElementById('copy-icon');
+                icon.className = 'fa-solid fa-check text-coral';
+                setTimeout(() => { icon.className = 'fa-regular fa-copy text-base'; }, 2000);
+            });
+        }
+
+        // 8. Contact Form
+        document.getElementById('contact-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const mailtoLink = `mailto:toshibirthare111@gmail.com?subject=Portfolio Inquiry from ${encodeURIComponent(name)}&body=${encodeURIComponent(message + "\n\nReply Email: " + email)}`;
+            window.location.href = mailtoLink;
+        });
+    </script>
+</body>
+
+</html>
